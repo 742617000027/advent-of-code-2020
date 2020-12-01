@@ -1,7 +1,4 @@
-import numpy as np
-
-
-def read_number_sequence():
+def read_int_sequence():
     with open('input', 'r') as fp:
-        sequence = [float(n.replace('\n', '')) for n in fp.readlines()]
-    return np.array(sequence)
+        sequence = [int(n.replace('\n', '')) for n in fp.readlines()]
+    return sequence
