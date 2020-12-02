@@ -31,12 +31,9 @@ if __name__ == '__main__':
     for row in sequence:
         policy, password = row.split(': ')
         positions, critical_char = policy.split(' ')
-        posA, posB = positions.split('-')
-        posA = int(posA) - 1
-        posB = int(posB) - 1
-        if (password[posA] == critical_char and password[posB] != critical_char) \
-                or (password[posA] != critical_char and password[posB] == critical_char):
-            valid += 1
+        posA, posB = [int(pos) - 1 for pos in positions.split('-')]
+        valid += ((password[posA] == critical_char and password[posB] != critical_char)
+                  or (password[posA] != critical_char and password[posB] == critical_char))
     toc = time()
     print(valid)
     print(f'finished in {1000 * (toc - tic):.2f}ms')  # 1.63ms
