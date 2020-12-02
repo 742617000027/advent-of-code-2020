@@ -42,7 +42,7 @@ if __name__ == '__main__':
     tic = time()
     sequence = utils.read_int_sequence()
     sequence.sort()
-    sequence = [x for x in sequence if x <= 2020 - sequence[0] * 2]
+    sequence = [x for x in sequence if x <= 2020 - sum(sequence[:2])]
 
     """
     import numpy as np
@@ -55,13 +55,13 @@ if __name__ == '__main__':
     """
 
     stop = False
-    for i, x in enumerate(sequence):
-        if x + sequence[-1] * 2 < 2020:
+    for i, x in enumerate(sequence[:-2]):
+        if x + sum(sequence[-2:]) < 2020:
             continue
-        for j, y in enumerate(sequence[i:]):
+        for j, y in enumerate(sequence[i + 1:-1]):
             if x + y + sequence[-1] < 2020:
                 continue
-            for z in sequence[j:]:
+            for z in sequence[i + j + 2:]:
                 if x + y + z == 2020:
                     print(x * y * z)
                     stop = True
