@@ -29,4 +29,4 @@ if __name__ == '__main__':
             trees[-1] += sequence[i][i * slope[0] // slope[1] % len(sequence[0])] == '#'
     toc = time()
     print(np.prod(trees))
-    print(f'finished in {1000 * (toc - tic):.2f}ms')
+    print(f'finished in {1000 * (toc - tic):.2f}ms')  # 0.70ms
