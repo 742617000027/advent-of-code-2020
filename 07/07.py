@@ -23,11 +23,10 @@ def container_walk(containee, containers):
 
 def containee_walk(container, multiplier):
     global count
-    if structure[container]:
-        for containee in structure[container]:
-            own_count = structure[container][containee]
-            count += multiplier * own_count
-            containee_walk(containee, multiplier * own_count)
+    for containee in structure[container]:
+        own_count = structure[container][containee]
+        count += multiplier * own_count
+        containee_walk(containee, multiplier * own_count)
 
 
 if __name__ == '__main__':
