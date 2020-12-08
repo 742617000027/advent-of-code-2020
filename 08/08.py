@@ -3,33 +3,43 @@ from time import time
 import utils
 
 
-def parse(instruction, idx, accumulator):
+def parse(instruction, idx, accumulator, flipped=None, fixing=False):
     op, val = instruction.split(' ')
+    if flipped is not None and not fixing:
+        if idx not in flipped and op in {'nop', 'jmp'}:
+            op = 'jmp' if op == 'nop' else 'nop'
+            flipped.add(idx)
+            fixing = True
     if op == 'jmp':
-        return idx + int(val), accumulator
+        return idx + int(val), accumulator, flipped, fixing
     if op == 'acc':
         accumulator += int(val)
-    return idx + 1, accumulator
+    return idx + 1, accumulator, flipped, fixing
 
 
-def run(instructions):
-    idx, accumulator = 0, 0
-    done = set()
+def run(instructions, idx, accumulator, visited, flipped):
+    fixing = False
+    idx_backup = idx
+    accumulator_backup = accumulator
+    visited_backup = visited.copy()
     while True:
         if idx == len(instructions):
             print(accumulator)
-            return True
-        if idx in done:
-            return False
-        done.add(idx)
-        idx, accumulator = parse(instructions[idx], idx, accumulator)
-
+            return True, idx, accumulator, visited, flipped
+        if idx in visited:
+            return False, idx_backup, accumulator_backup, visited_backup, flipped
+        visited.add(idx)
+        idx, accumulator, flipped, fixing = parse(instructions[idx], idx, accumulator, flipped, fixing)
+        if not fixing:
+            idx_backup = idx
+            accumulator_backup = accumulator
+            visited_backup = visited.copy()
 
 if __name__ == '__main__':
 
     # Part 1
     """
-    tic = time()
+    tic = time()x 
     sequence = utils.read_str_sequence()
     idx, accumulator = 0, 0
     done = set()
@@ -38,20 +48,19 @@ if __name__ == '__main__':
             print(accumulator)
             break
         done.add(idx)
-        idx, accumulator = parse(sequence[idx], idx, accumulator)
+        idx, accumulator, _ = parse(sequence[idx], idx, accumulator)
     toc = time()
     print(f'finished in {1000 * (toc - tic):.2f}ms') # 0.32ms
     """
 
-    # Part 2 alt
+    # Part 2
     tic = time()
     sequence = utils.read_str_sequence()
-    for i, instruction in enumerate(sequence):
-        instructions = sequence.copy()
-        if any(op in instruction for op in ['nop', 'jmp']):
-            instructions[i] = instruction.replace('nop', 'jmp') if 'nop' in instruction \
-                else instruction.replace('jmp', 'nop')
-            if run(instructions):
-                break
+    idx, accumulator = 0, 0
+    visited, flipped = set(), set()
+    while True:
+        finished, idx, accumulator, visited, flipped = run(sequence, idx, accumulator, visited, flipped)
+        if finished:
+            break
     toc = time()
-    print(f'finished in {1000 * (toc - tic):.2f}ms')  # 12.46ms
+    print(f'finished in {1000 * (toc - tic):.2f}ms')  # 4.52ms
