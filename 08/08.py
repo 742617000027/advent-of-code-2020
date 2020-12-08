@@ -48,9 +48,10 @@ if __name__ == '__main__':
     sequence = utils.read_str_sequence()
     for i, instruction in enumerate(sequence):
         instructions = sequence.copy()
-        instructions[i] = instruction.replace('nop', 'jmp') if 'nop' in instruction \
-            else instruction.replace('jmp', 'nop')
-        if run(instructions):
-            break
+        if any(op in instruction for op in ['nop', 'jmp']):
+            instructions[i] = instruction.replace('nop', 'jmp') if 'nop' in instruction \
+                else instruction.replace('jmp', 'nop')
+            if run(instructions):
+                break
     toc = time()
-    print(f'finished in {1000 * (toc - tic):.2f}ms')  # 24.38ms
+    print(f'finished in {1000 * (toc - tic):.2f}ms')  # 12.46ms
