@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     # Part 1
     """
-    tic = time()x 
+    tic = time()
     sequence = utils.read_str_sequence()
     idx, accumulator = 0, 0
     done = set()
@@ -49,9 +49,9 @@ if __name__ == '__main__':
             print(accumulator)
             break
         done.add(idx)
-        idx, accumulator, _ = parse(sequence[idx], idx, accumulator)
+        idx, accumulator, _, _ = parse(sequence[idx], idx, accumulator)
     toc = time()
-    print(f'finished in {1000 * (toc - tic):.2f}ms') # 0.32ms
+    print(f'finished in {1000 * (toc - tic):.2f}ms') # 0.13ms
     """
 
     # Part 2
