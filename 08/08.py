@@ -14,14 +14,15 @@ def parse(instruction, idx, accumulator):
 
 def modify(instruction, idx):
     global fixing
-    if 'nop' in instruction and idx not in flipped['nop']:
-        fixing = True
-        flipped['nop'].add(idx)
-        return instruction.replace('nop', 'jmp')
-    if 'jmp' in instruction and idx not in flipped['jmp']:
-        fixing = True
-        flipped['jmp'].add(idx)
-        return instruction.replace('jmp', 'nop')
+    if not fixing:
+        if 'nop' in instruction and idx not in flipped['nop']:
+            fixing = True
+            flipped['nop'].add(idx)
+            return instruction.replace('nop', 'jmp')
+        if 'jmp' in instruction and idx not in flipped['jmp']:
+            fixing = True
+            flipped['jmp'].add(idx)
+            return instruction.replace('jmp', 'nop')
     return instruction
 
 
@@ -61,7 +62,7 @@ if __name__ == '__main__':
                 fixing = False
                 break
             done.add(idx)
-            instruction = modify(sequence[idx], idx) if not fixing else sequence[idx]
+            instruction = modify(sequence[idx], idx)
             idx, accumulator = parse(instruction, idx, accumulator)
         if fixed:
             print(accumulator)
