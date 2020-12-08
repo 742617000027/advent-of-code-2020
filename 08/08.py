@@ -35,6 +35,7 @@ def run(instructions, idx, accumulator, visited, flipped):
             accumulator_backup = accumulator
             visited_backup = visited.copy()
 
+
 if __name__ == '__main__':
 
     # Part 1
