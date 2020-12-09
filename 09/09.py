@@ -13,23 +13,6 @@ def invalid(subsequence, target):
     return True
 
 
-def truncate(subsequence, target):
-    while sum(subsequence) > target:
-        subsequence.pop(0)
-    return subsequence
-
-
-def find_contiguous(sequence, target):
-    subsequence = [sequence[0]]
-    for i in range(1, len(sequence)):
-        subsequence.append(sequence[i])
-        if sum(subsequence) > target:
-            subsequence = truncate(subsequence, target)
-        if sum(subsequence) == target:
-            print(min(subsequence[:i]) + max(subsequence[:i]))
-            break
-
-
 if __name__ == '__main__':
 
     # Part 1
@@ -51,6 +34,14 @@ if __name__ == '__main__':
         if invalid(sequence[i - 25:i], sequence[i]):
             target = sequence[i]
             break
-    find_contiguous(sequence, target)
+    subsequence = [sequence[0]]
+    for i in range(1, len(sequence)):
+        subsequence.append(sequence[i])
+        if sum(subsequence) > target:
+            while sum(subsequence) > target:
+                subsequence.pop(0)
+        if sum(subsequence) == target:
+            print(min(subsequence[:i]) + max(subsequence[:i]))
+            break
     toc = time()
     print(f'finished in {1000 * (toc - tic):.2f}ms')  # 4.56m
