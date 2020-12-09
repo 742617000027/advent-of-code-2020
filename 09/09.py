@@ -33,15 +33,14 @@ if __name__ == '__main__':
     for i in range(25, len(sequence)):
         if invalid(sequence[i - 25:i], sequence[i]):
             target = sequence[i]
-            break
-    subsequence = [sequence[0]]
-    for i in range(1, len(sequence)):
-        subsequence.append(sequence[i])
-        if sum(subsequence) > target:
-            while sum(subsequence) > target:
-                subsequence.pop(0)
-        if sum(subsequence) == target:
-            print(min(subsequence[:i]) + max(subsequence[:i]))
+            subsequence = [sequence[0]]
+            for j in range(1, len(sequence)):
+                subsequence.append(sequence[j])
+                while sum(subsequence) > target:
+                    subsequence.pop(0)
+                if sum(subsequence) == target:
+                    print(min(subsequence[:j]) + max(subsequence[:j]))
+                    break
             break
     toc = time()
     print(f'finished in {1000 * (toc - tic):.2f}ms')  # 4.56m
