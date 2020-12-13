@@ -38,7 +38,7 @@ def act(action):
 
 
 def act2(action):
-    global pos, waypoint, deg
+    global pos, waypoint
     key = action[0]
     val = float(action[1:])
     if key == 'N':
