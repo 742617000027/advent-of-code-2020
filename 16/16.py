@@ -39,10 +39,7 @@ if __name__ == '__main__':
     for line in utils.read_str_sequence(file='rules'):
         rule, ranges = line.split(': ')
         a, b = ranges.split(' or ')
-        rules[rule] = {
-            'a': tuple([int(val) for val in a.split('-')]),
-            'b': tuple([int(val) for val in b.split('-')])
-        }
+        rules[rule] = [int(val) for val in a.split('-')] + [int(val) for val in b.split('-')]
     sequence = utils.read_str_sequence()
     my_ticket = [223, 139, 211, 131, 113, 197, 151, 193, 127, 53, 89, 167, 227, 79, 163, 199, 191, 83, 137, 149]
     sequence.append(','.join([str(x) for x in my_ticket]))
@@ -51,9 +48,8 @@ if __name__ == '__main__':
         vals = [int(val) for val in ticket.split(',')]
         ok = [False] * len(vals)
         for i, val in enumerate(vals):
-            for rule in rules.values():
-                if rule['a'][0] <= val <= rule['a'][1] or \
-                        rule['b'][0] <= val <= rule['b'][1]:
+            for bounds in rules.values():
+                if bounds[0] <= val <= bounds[1] or bounds[2] <= val <= bounds[3]:
                     ok[i] = True
                     break
         if all(ok):
@@ -64,7 +60,7 @@ if __name__ == '__main__':
     for rule, bounds in rules.items():
         candidates[rule] = set()
         for i, unique in enumerate(uniques):
-            if all([bounds['a'][0] <= x <= bounds['a'][1] or bounds['b'][0] <= x <= bounds['b'][1] for x in unique]):
+            if all([bounds[0] <= x <= bounds[1] or bounds[2] <= x <= bounds[3] for x in unique]):
                 candidates[rule].add(i)
     fields = dict()
     while True:
