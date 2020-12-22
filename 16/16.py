@@ -47,9 +47,9 @@ if __name__ == '__main__':
     for ticket in sequence:
         vals = [int(val) for val in ticket.split(',')]
         ok = [False] * len(vals)
-        for i, val in enumerate(vals):
+        for i, x in enumerate(vals):
             for bounds in rules.values():
-                if bounds[0] <= val <= bounds[1] or bounds[2] <= val <= bounds[3]:
+                if bounds[0] <= x <= bounds[1] or bounds[2] <= x <= bounds[3]:
                     ok[i] = True
                     break
         if all(ok):
@@ -65,9 +65,9 @@ if __name__ == '__main__':
     fields = dict()
     while True:
         num_candidates = {c: len(l) for c, l in candidates.items()}
-        found = min(num_candidates, key=num_candidates.get)
-        field_no = min(candidates[found])
-        fields[found] = field_no
+        rule = min(num_candidates, key=num_candidates.get)
+        field_no = min(candidates[rule])
+        fields[rule] = field_no
         delete_these = []
         for candidate, field_nos in candidates.items():
             field_nos.remove(field_no)
